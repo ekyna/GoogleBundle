@@ -1,0 +1,8 @@
+{% block ekyna_google_coordinate_widget %}
+    <div class="ekyna-google-coordinate" id="{{ form.vars.id }}" data-config="{{ form.vars.config|json_encode }}">
+        {{ google_map(map) }}
+
+        {{ form_widget(form.latitude) }}
+        {{ form_widget(form.longitude) }}
+    </div>
+{% endblock ekyna_google_coordinate_widget %}

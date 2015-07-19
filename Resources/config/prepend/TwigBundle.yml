@@ -1,0 +1,4 @@
+twig:
+    form:
+        resources:
+            - "EkynaGoogleBundle:Form:form_div_layout.html.twig"

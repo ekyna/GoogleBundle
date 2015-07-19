@@ -1,0 +1,4 @@
+doctrine:
+    dbal:
+        types:
+            coordinate: Ekyna\Bundle\GoogleBundle\Doctrine\Types\CoordinateType

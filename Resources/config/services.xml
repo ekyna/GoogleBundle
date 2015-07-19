@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container
+        xmlns="http://symfony.com/schema/dic/services"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://symfony.com/schema/dic/services
+                        http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <!-- Google client -->
+        <service id="ekyna_google.client" class="Ekyna\Bundle\GoogleBundle\GoogleClient">
+            <argument>%ekyna_google.client_config%</argument>
+        </service>
+
+        <!-- Form types -->
+        <service id="ekyna_google.coordinate.form_type" class="Ekyna\Bundle\GoogleBundle\Form\Type\CoordinateType">
+            <argument type="service" id="ivory_google_map.map.builder" />
+            <tag name="form.type" alias="ekyna_google_coordinate" />
+            <tag name="form.js" selector=".ekyna-google-coordinate" path="ekyna-form/google-coordinate" />
+        </service>
+
+    </services>
+
+</container>
