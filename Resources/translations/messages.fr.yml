@@ -1,2 +1,3 @@
 ekyna_google:
-    coordinate: Coordonnées
+    field:
+        coordinate: Coordonnées

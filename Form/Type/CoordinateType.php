@@ -6,8 +6,6 @@ use Ivory\GoogleMapBundle\Entity\Marker;
 use Ivory\GoogleMapBundle\Model\MapBuilder;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -24,8 +22,11 @@ class CoordinateType extends AbstractType
      */
     protected $mapBuilder;
 
+
     /**
-     * @param MapBuilder $mapBuilder
+     * Constructor.
+     *
+     * @param MapBuilder   $mapBuilder
      */
     public function __construct(MapBuilder $mapBuilder)
     {
@@ -41,11 +42,6 @@ class CoordinateType extends AbstractType
             ->add('latitude', 'hidden')
             ->add('longitude', 'hidden')
         ;
-
-        /*$builder->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event) {
-            var_dump($event->getData());
-            exit();
-        });*/
     }
 
     /**
@@ -54,11 +50,11 @@ class CoordinateType extends AbstractType
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $this->mapBuilder->setHtmlContainerId($view->vars['id'].'_map_canvas');
-        // $this->mapBuilder->setLanguage(); TODO
         $this->mapBuilder->setAutoZoom(true);
         $this->mapBuilder->setMapOptions(array(
             'minZoom' => 3,
             'maxZoom' => 18,
+            'disableDefaultUI' => true,
         ));
         $this->mapBuilder->setStylesheetOptions(array(
             'width' => '100%',
@@ -92,7 +88,7 @@ class CoordinateType extends AbstractType
     {
         $resolver
             ->setDefaults(array(
-                'label' => 'ekyna_google.coordinate',
+                'label' => 'ekyna_google.field.coordinate',
                 'data_class' => 'Ivory\GoogleMap\Base\Coordinate',
                 'by_reference' => false,
             ))
