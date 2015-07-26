@@ -19,6 +19,18 @@
             <tag name="form.js" selector=".ekyna-google-coordinate" path="ekyna-form/google-coordinate" />
         </service>
 
+        <!-- Settings Schema -->
+        <service id="ekyna_google.settings" class="Ekyna\Bundle\GoogleBundle\Settings\Schema">
+            <tag name="ekyna_setting.schema" namespace="google" position="90" />
+        </service>
+
+        <!-- Twig Extensions -->
+        <service id="ekyna_google.twig.google_extension" class="Ekyna\Bundle\GoogleBundle\Twig\GoogleExtension">
+            <argument type="service" id="ekyna_setting.manager" />
+            <argument>%kernel.debug%</argument>
+            <tag name="twig.extension" />
+        </service>
+
     </services>
 
 </container>
