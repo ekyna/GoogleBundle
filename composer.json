@@ -24,11 +24,10 @@
         "egeloen/google-map-bundle": "2.2.*"
 	},
 	"autoload" : {
-		"psr-0" : {
-			"Ekyna\\Bundle\\GoogleBundle" : ""
+		"psr-4" : {
+			"Ekyna\\Bundle\\GoogleBundle\\" : ""
 		}
 	},
-	"target-dir" : "Ekyna/Bundle/GoogleBundle",
 	"extra" : {
 		"branch-alias" : {
 			"dev-master" : "0.3.x-dev"
