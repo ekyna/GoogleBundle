@@ -52,7 +52,7 @@ class TestController extends Controller
         (the query), and an array of named optional
         parameters.
          ************************************************/
-        $optParams = array('filter' => 'free-ebooks');
+        $optParams = ['filter' => 'free-ebooks'];
         $results = $service->volumes->listVolumes('Henry David Thoreau', $optParams);
 
         /************************************************
@@ -73,7 +73,7 @@ class TestController extends Controller
         This is an example of deferring a call.
          ***********************************************/
         $client->setDefer(true);
-        $optParams = array('filter' => 'free-ebooks');
+        $optParams = ['filter' => 'free-ebooks'];
         $request = $service->volumes->listVolumes('Henry David Thoreau', $optParams);
         $results = $client->execute($request);
 

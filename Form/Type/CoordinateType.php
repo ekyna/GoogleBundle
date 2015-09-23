@@ -8,7 +8,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class CoordinateType
@@ -51,15 +51,15 @@ class CoordinateType extends AbstractType
     {
         $this->mapBuilder->setHtmlContainerId($view->vars['id'].'_map_canvas');
         $this->mapBuilder->setAutoZoom(true);
-        $this->mapBuilder->setMapOptions(array(
+        $this->mapBuilder->setMapOptions([
             'minZoom' => 3,
             'maxZoom' => 18,
             'disableDefaultUI' => true,
-        ));
-        $this->mapBuilder->setStylesheetOptions(array(
+        ]);
+        $this->mapBuilder->setStylesheetOptions([
             'width' => '100%',
             'height' => '320px',
-        ));
+        ]);
 
         $map = $this->mapBuilder->build();
 
@@ -72,10 +72,10 @@ class CoordinateType extends AbstractType
         }
         $map->addMarker($marker);
 
-        $config = array(
+        $config = [
             'map_var' => $map->getJavascriptVariable(),
             'marker_var' => $marker->getJavascriptVariable(),
-        );
+        ];
 
         $view->vars['map'] = $map;
         $view->vars['config'] = $config;
@@ -84,14 +84,14 @@ class CoordinateType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver
-            ->setDefaults(array(
+            ->setDefaults([
                 'label' => 'ekyna_google.field.coordinate',
                 'data_class' => 'Ivory\GoogleMap\Base\Coordinate',
                 'by_reference' => false,
-            ))
+            ])
         ;
     }
 

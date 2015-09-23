@@ -38,7 +38,7 @@ class CoordinateType extends ArrayType
             throw ConversionException::conversionFailed($value, $this->getName());
         }
 
-        $data = array($value->getLatitude(), $value->getLongitude(), $value->isNoWrap());
+        $data = [$value->getLatitude(), $value->getLongitude(), $value->isNoWrap()];
 
         return parent::convertToDatabaseValue($data, $platform);
     }

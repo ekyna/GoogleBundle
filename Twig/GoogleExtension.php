@@ -50,9 +50,9 @@ EOT;
      */
     public function getFunctions()
     {
-        return array(
-            new \Twig_SimpleFunction('ekyna_google_tracking', array($this, 'getGoogleTracking'), array('is_safe' => array('html')))
-        );
+        return [
+            new \Twig_SimpleFunction('ekyna_google_tracking', [$this, 'getGoogleTracking'], ['is_safe' => ['html']])
+        ];
     }
 
     /**
@@ -69,7 +69,7 @@ EOT;
             if (0 === strlen($domain)) {
                 $domain = 'auto';
             }
-            if (in_array($trackingCode->getDomain(), array('none', 'auto'))) {
+            if (in_array($trackingCode->getDomain(), ['none', 'auto'])) {
                 $domain = sprintf("'%s'", $domain);
             } else {
                 $domain = sprintf("{'cookieDomain': '%s'}", $domain);
