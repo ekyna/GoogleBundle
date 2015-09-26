@@ -3,3 +3,4 @@ ekyna_google_test:
     defaults: { _controller: EkynaGoogleBundle:Test:test }
     requirements:
         _method: GET
+    options: { i18n: false }
