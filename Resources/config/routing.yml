@@ -2,3 +2,4 @@ ekyna_google_test:
     path: /google/test
     defaults: { _controller: EkynaGoogleBundle:Test:test }
     methods: [GET]
+    options: { i18n: false }
