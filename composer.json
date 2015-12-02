@@ -19,7 +19,7 @@
 	],
 	"require" : {
 		"php" : ">=5.4.0",
-        "ekyna/admin-bundle": "0.4.x-dev",
+        "ekyna/admin-bundle": "0.5.x-dev",
         "google/apiclient": "1.*",
         "egeloen/google-map-bundle": "2.2.*"
 	},
