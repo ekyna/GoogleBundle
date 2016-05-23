@@ -1,31 +1,31 @@
 {
-	"name" : "ekyna/google-bundle",
-	"description" : "google management",
-	"type" : "symfony-bundle",
-	"authors" : [
+    "name" : "ekyna/google-bundle",
+    "description" : "google management",
+    "type" : "symfony-bundle",
+    "authors" : [
         {
-			"name" : "Etienne Dauvergne",
-			"homepage" : "http://ekyna.com"
-		}
-	],
-	"keywords" : [
-		"symfony2",
-		"google",
-		"bundle"
-	],
-	"homepage" : "https://github.com/ekyna/GoogleBundle",
-	"license" : [
-		"MIT"
-	],
-	"require" : {
-		"php" : ">=5.4.0",
-        "ekyna/admin-bundle": "0.5.x-dev",
-        "google/apiclient": "1.*",
-        "egeloen/google-map-bundle": "2.2.*"
-	},
-	"autoload" : {
-		"psr-4" : {
-			"Ekyna\\Bundle\\GoogleBundle\\" : ""
-		}
-	}
+            "name" : "Etienne Dauvergne",
+            "homepage" : "http://ekyna.com"
+        }
+    ],
+    "keywords" : [
+        "symfony2",
+        "google",
+        "bundle"
+    ],
+    "homepage" : "https://github.com/ekyna/GoogleBundle",
+    "license" : [
+        "MIT"
+    ],
+    "require" : {
+        "php" : ">=5.5.9",
+        "ekyna/admin-bundle": "0.6.x-dev",
+        "google/apiclient": "^1.0",
+        "petrepatrasc/google-map-bundle": "^2.3"
+    },
+    "autoload" : {
+        "psr-4" : {
+            "Ekyna\\Bundle\\GoogleBundle\\" : ""
+        }
+    }
 }

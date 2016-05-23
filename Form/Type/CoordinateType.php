@@ -5,6 +5,7 @@ namespace Ekyna\Bundle\GoogleBundle\Form\Type;
 use Ivory\GoogleMapBundle\Entity\Marker;
 use Ivory\GoogleMapBundle\Model\MapBuilder;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -39,9 +40,8 @@ class CoordinateType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('latitude', 'hidden')
-            ->add('longitude', 'hidden')
-        ;
+            ->add('latitude', HiddenType::class)
+            ->add('longitude', HiddenType::class);
     }
 
     /**
@@ -86,19 +86,17 @@ class CoordinateType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver
-            ->setDefaults([
-                'label' => 'ekyna_google.field.coordinate',
-                'data_class' => 'Ivory\GoogleMap\Base\Coordinate',
-                'by_reference' => false,
-            ])
-        ;
+        $resolver->setDefaults([
+            'label' => 'ekyna_google.field.coordinate',
+            'data_class' => 'Ivory\GoogleMap\Base\Coordinate',
+            'by_reference' => false,
+        ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'ekyna_google_coordinate';
     }

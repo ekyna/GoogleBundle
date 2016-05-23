@@ -36,7 +36,7 @@ class Schema extends AbstractSchema
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('tracking_code', new TrackingCodeType())
+            ->add('tracking_code', TrackingCodeType::class)
         ;
     }
 

@@ -3,6 +3,7 @@
 namespace Ekyna\Bundle\GoogleBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -19,11 +20,11 @@ class TrackingCodeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('propertyId', 'text', [
+            ->add('propertyId', TextType::class, [
                 'label' => 'ekyna_google.tracking_code.field.property_id',
                 'required' => false,
             ])
-            ->add('domain', 'text', [
+            ->add('domain', TextType::class, [
                 'label' => 'ekyna_google.tracking_code.field.domain',
                 'required' => false,
             ])
@@ -35,19 +36,9 @@ class TrackingCodeType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver
-            ->setDefaults([
-                'label' => 'ekyna_google.field.tracking_code',
-                'data_class' => 'Ekyna\Bundle\GoogleBundle\Model\TrackingCode',
-            ])
-        ;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'ekyna_google_tracking_code';
+        $resolver->setDefaults([
+            'label' => 'ekyna_google.field.tracking_code',
+            'data_class' => 'Ekyna\Bundle\GoogleBundle\Model\TrackingCode',
+        ]);
     }
 }

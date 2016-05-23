@@ -36,6 +36,7 @@ class Configuration implements ConfigurationInterface
         $node
             ->children()
                 ->arrayNode('client')
+                    ->isRequired()
                     ->children()
                         ->scalarNode('application_name')->isRequired()->cannotBeEmpty()->end()
                         ->scalarNode('client_id')->end()
