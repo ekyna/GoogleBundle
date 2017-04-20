@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\GoogleBundle\Show\Type;
 
 use Ekyna\Bundle\AdminBundle\Show\Type\AbstractType;
@@ -15,15 +17,18 @@ class GoogleCodesType extends AbstractType
     /**
      * @inheritDoc
      */
-    protected function configureOptions(OptionsResolver $resolver)
+    protected function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefault('label', 'ekyna_google.field.tracking');
+        $resolver->setDefaults([
+            'label'              => 'field.tracking',
+            'label_trans_domain' => 'EkynaGoogle',
+        ]);
     }
 
     /**
      * @inheritDoc
      */
-    public function getWidgetPrefix()
+    public static function getName(): string
     {
         return 'google_codes';
     }

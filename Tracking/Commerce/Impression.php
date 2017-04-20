@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Ekyna\Bundle\GoogleBundle\Tracking\Commerce;
@@ -12,45 +13,14 @@ use Ekyna\Bundle\GoogleBundle\Tracking\Item;
  */
 class Impression implements Item
 {
-    /**
-     * @var string
-     */
-    private $id;
-
-    /**
-     * @var string
-     */
-    private $name;
-
-    /**
-     * @var string
-     */
-    private $listName;
-
-    /**
-     * @var string
-     */
-    private $brand;
-
-    /**
-     * @var string
-     */
-    private $category;
-
-    /**
-     * @var string
-     */
-    private $variant;
-
-    /**
-     * @var int
-     */
-    private $listPosition;
-
-    /**
-     * @var string
-     */
-    private $price;
+    private string  $id;
+    private string  $name;
+    private ?string $listName     = null;
+    private ?string $brand        = null;
+    private ?string $category     = null;
+    private ?string $variant      = null;
+    private ?int    $listPosition = null;
+    private ?string $price        = null;
 
 
     /**
@@ -178,9 +148,9 @@ class Impression implements Item
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
-    public function getData()
+    public function getData(): array
     {
         return array_filter([
             'id'            => $this->id,

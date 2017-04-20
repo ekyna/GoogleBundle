@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\GoogleBundle\Tracking;
 
 /**
@@ -9,19 +11,9 @@ namespace Ekyna\Bundle\GoogleBundle\Tracking;
  */
 class TrackingPool
 {
-    /**
-     * @var Event[]
-     */
-    private $events;
+    /** @var Event[] */
+    private array $events = [];
 
-
-    /**
-     * Constructor.
-     */
-    public function __construct()
-    {
-        $this->events = [];
-    }
 
     /**
      * Adds the event.
@@ -30,12 +22,12 @@ class TrackingPool
      *
      * @return TrackingPool
      */
-    public function addEvent(Event $event)
+    public function addEvent(Event $event): TrackingPool
     {
-        $id = spl_object_id($event);
+        $objectId = spl_object_id($event);
 
-        if (!isset($this->events[$id])) {
-            $this->events[$id] = $event;
+        if (!isset($this->events[$objectId])) {
+            $this->events[$objectId] = $event;
         }
 
         return $this;

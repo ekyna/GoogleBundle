@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\GoogleBundle\Show\Type;
 
 use Ekyna\Bundle\AdminBundle\Show\Type\AbstractType;
@@ -8,8 +10,10 @@ use Ivory\GoogleMap\Base\Coordinate;
 use Ivory\GoogleMap\Map;
 use Ivory\GoogleMap\Overlay\Marker;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\Exception\ExceptionInterface;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+
+use function uniqid;
 
 /**
  * Class GoogleMapType
@@ -21,7 +25,7 @@ class GoogleMapType extends AbstractType
     /**
      * @inheritDoc
      */
-    public function build(View $view, $value, array $options = [])
+    public function build(View $view, $value, array $options = []): void
     {
         parent::build($view, $value, $options);
 
@@ -66,8 +70,8 @@ class GoogleMapType extends AbstractType
                 'disableDefaultUI' => true,
             ]);
             $map->setStylesheetOptions([
-                'width'         => '100%',
-                'height'        => $options['map_height'] . 'px',
+                'width'  => '100%',
+                'height' => $options['map_height'] . 'px',
             ]);
         }
 
@@ -79,10 +83,7 @@ class GoogleMapType extends AbstractType
         $view->vars['static'] = $options['map_static'];
     }
 
-    /**
-     * @inheritDoc
-     */
-    protected function configureOptions(OptionsResolver $resolver)
+    protected function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefaults([
@@ -107,10 +108,7 @@ class GoogleMapType extends AbstractType
             ->setAllowedTypes('latitude_path', 'string');
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getWidgetPrefix()
+    public static function getName(): string
     {
         return 'google_map';
     }

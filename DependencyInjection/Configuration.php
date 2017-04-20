@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\GoogleBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
@@ -13,25 +15,44 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 class Configuration implements ConfigurationInterface
 {
-    /**
-     * {@inheritDoc}
-     */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('ekyna_google');
+        $builder = new TreeBuilder('ekyna_google');
 
-        $this->addClientSection($rootNode);
+        $node = $builder->getRootNode();
 
-        return $treeBuilder;
+        $this->addApiSection($node);
+        $this->addClientSection($node);
+        $this->addTrackingSection($node);
+
+        return $builder;
     }
 
     /**
-     * Adds the client section.
+     * Adds the `api` section.
      *
      * @param ArrayNodeDefinition $node
      */
-    private function addClientSection(ArrayNodeDefinition $node)
+    private function addApiSection(ArrayNodeDefinition $node): void
+    {
+        $node
+            ->children()
+                ->arrayNode('api')
+                    ->isRequired()
+                    ->children()
+                        ->scalarNode('key')->isRequired()->cannotBeEmpty()->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
+    }
+
+    /**
+     * Adds the `client` section.
+     *
+     * @param ArrayNodeDefinition $node
+     */
+    private function addClientSection(ArrayNodeDefinition $node): void
     {
         $node
             ->children()
@@ -45,6 +66,19 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('developer_key')->end()
                     ->end()
                 ->end()
+            ->end()
+        ;
+    }
+
+    /**
+     * Adds the `tracking` section.
+     *
+     * @param ArrayNodeDefinition $node
+     */
+    private function addTrackingSection(ArrayNodeDefinition $node): void
+    {
+        $node
+            ->children()
                 ->arrayNode('tracking')
                     ->canBeDisabled()
                     ->addDefaultsIfNotSet()

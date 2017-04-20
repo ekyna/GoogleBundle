@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\GoogleBundle\Twig;
 
 use Ekyna\Bundle\GoogleBundle\Map\MapPoolAwareTrait;
+use Ivory\GoogleMap\Map;
 use Ivory\GoogleMapBundle\Twig\ApiExtension as BaseExtension;
 
 /**
@@ -15,10 +18,7 @@ class ApiExtension extends BaseExtension
     use MapPoolAwareTrait;
 
 
-    /**
-     * @inheritDoc
-     */
-    public function render(array $objects = null)
+    public function render(array $objects = null): string
     {
         if (null === $objects) {
             $objects = $this->mapPool->all();
@@ -29,7 +29,7 @@ class ApiExtension extends BaseExtension
         }
 
         $mapMaps = [];
-        /** @var \Ivory\GoogleMap\Map $map */
+        /** @var Map $map */
         foreach ($objects as $map) {
             $mapMaps[] = "{element: '{$map->getHtmlId()}', map: '{$map->getVariable()}'}";
         }
@@ -40,8 +40,7 @@ class ApiExtension extends BaseExtension
 require(['jquery'], function($) {
     $mapMaps;
     function checkMaps() {
-        var check = true;
-        for (key in maps) {
+        for (var key in maps) {
             if (maps.hasOwnProperty(key)) {
                 if (!window.hasOwnProperty(maps[key].map)) {
                     return false;
@@ -52,18 +51,18 @@ require(['jquery'], function($) {
     }
     function initMapTabs() {
         $.each(maps, function(key, value) {
-            var pane = $('#' + value.element).closest('.tab-pane');
+            const pane = $('#' + value.element).closest('.tab-pane');
             if (pane.length) {
                 $('a[href="#' + pane.attr('id') + '"]').on("shown.bs.tab", function() {
-                    var map = window[value.map]; 
-                    center=map.getCenter();
+                    let map = window[value.map]; 
+                    let center=map.getCenter();
                     google.maps.event.trigger(map, "resize");
                     map.setCenter(center);
                 });
             }
         });
     }
-    var i = setInterval(function() {
+    let i = setInterval(function() {
         if (checkMaps()) {
             clearInterval(i);
             initMapTabs();

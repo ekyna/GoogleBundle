@@ -1,9 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Ekyna\Bundle\GoogleBundle\Tracking;
 
 use Ekyna\Bundle\GoogleBundle\Tracking\Commerce;
+use InvalidArgumentException;
+use UnexpectedValueException;
 
 /**
  * Class Action
@@ -12,31 +15,31 @@ use Ekyna\Bundle\GoogleBundle\Tracking\Commerce;
  */
 class Event
 {
-    const ADD_PAYMENT_INFO    = 'add_payment_info';
-    const ADD_TO_CART         = 'add_to_cart';
-    const ADD_TO_WISHLIST     = 'add_to_wishlist';
-    const BEGIN_CHECKOUT      = 'begin_checkout';
-    const CHECKOUT_PROGRESS   = 'checkout_progress';
-    const GENERATE_LEAD       = 'generate_lead';
-    const LOGIN               = 'login';
-    const PAGE_VIEW           = 'page_view';
-    const PURCHASE            = 'purchase';
-    const CONVERSION          = 'conversion';
-    const REFUND              = 'refund';
-    const REMOVE_FROM_CART    = 'remove_from_cart';
-    const SCREEN_VIEW         = 'screen_view';
-    const SEARCH              = 'search';
-    const SELECT_CONTENT      = 'select_content';
-    const SET_CHECKOUT_OPTION = 'set_checkout_option';
-    const SHARE               = 'share';
-    const SIGN_UP             = 'sign_up';
-    const VIEW_ITEM           = 'view_item';
-    const VIEW_ITEM_LIST      = 'view_item_list';
-    const VIEW_PROMOTION      = 'view_promotion';
-    const VIEW_SEARCH_RESULTS = 'view_search_results';
+    public const ADD_PAYMENT_INFO    = 'add_payment_info';
+    public const ADD_TO_CART         = 'add_to_cart';
+    public const ADD_TO_WISHLIST     = 'add_to_wishlist';
+    public const BEGIN_CHECKOUT      = 'begin_checkout';
+    public const CHECKOUT_PROGRESS   = 'checkout_progress';
+    public const GENERATE_LEAD       = 'generate_lead';
+    public const LOGIN               = 'login';
+    public const PAGE_VIEW           = 'page_view';
+    public const PURCHASE            = 'purchase';
+    public const CONVERSION          = 'conversion';
+    public const REFUND              = 'refund';
+    public const REMOVE_FROM_CART    = 'remove_from_cart';
+    public const SCREEN_VIEW         = 'screen_view';
+    public const SEARCH              = 'search';
+    public const SELECT_CONTENT      = 'select_content';
+    public const SET_CHECKOUT_OPTION = 'set_checkout_option';
+    public const SHARE               = 'share';
+    public const SIGN_UP             = 'sign_up';
+    public const VIEW_ITEM           = 'view_item';
+    public const VIEW_ITEM_LIST      = 'view_item_list';
+    public const VIEW_PROMOTION      = 'view_promotion';
+    public const VIEW_SEARCH_RESULTS = 'view_search_results';
 
-    const CONTENT_PRODUCT     = 'product';
-    const CONTENT_PROMOTION   = 'promotion';
+    public const CONTENT_PRODUCT   = 'product';
+    public const CONTENT_PROMOTION = 'promotion';
 
 
     /**
@@ -44,7 +47,7 @@ class Event
      *
      * @return array
      */
-    static public function getEventTypes(): array
+    public static function getEventTypes(): array
     {
         return [
             self::ADD_PAYMENT_INFO,
@@ -77,10 +80,10 @@ class Event
      *
      * @param string $type
      */
-    static public function validateEventType(string $type)
+    public static function validateEventType(string $type)
     {
         if (!in_array($type, self::getEventTypes(), true)) {
-            throw new \UnexpectedValueException("Event type '$type' is not valid.");
+            throw new UnexpectedValueException("Event type '$type' is not valid.");
         }
     }
 
@@ -89,7 +92,7 @@ class Event
      *
      * @return array
      */
-    static public function getContentTypes(): array
+    public static function getContentTypes(): array
     {
         return [
             self::CONTENT_PRODUCT,
@@ -102,73 +105,28 @@ class Event
      *
      * @param string $type
      */
-    static public function validateContentType(string $type)
+    public static function validateContentType(string $type)
     {
         if (!in_array($type, self::getContentTypes(), true)) {
-            throw new \UnexpectedValueException("Content type '$type' is not valid.");
+            throw new UnexpectedValueException("Content type '$type' is not valid.");
         }
     }
 
 
-    /**
-     * @var string
-     */
-    private $type;
+    private string  $type;
+    private ?string $transactionId  = null;
+    private ?string $affiliation    = null;
+    private ?string $value          = null;
+    private ?string $tax            = null;
+    private ?string $shipping       = null;
+    private ?int    $checkoutStep   = null;
+    private ?string $checkoutOption = null;
+    private ?string $coupon         = null;
 
-    /**
-     * @var string
-     */
-    private $transactionId;
-
-    /**
-     * @var string
-     */
-    private $affiliation;
-
-    /**
-     * @var string
-     */
-    private $value;
-
-    /**
-     * @var string
-     */
-    private $tax;
-
-    /**
-     * @var string
-     */
-    private $shipping;
-
-    /**
-     * @var int
-     */
-    private $checkoutStep;
-
-    /**
-     * @var string
-     */
-    private $checkoutOption;
-
-    /**
-     * @var Item[]
-     */
-    private $items = [];
-
-    /**
-     * @var string
-     */
-    private $contentType;
-
-    /**
-     * @var string
-     */
-    private $coupon;
-
-    /**
-     * @var array
-     */
-    private $extra = [];
+    /** @var Item[] */
+    private array  $items = [];
+    private string $contentType;
+    private array  $extra = [];
 
 
     /**
@@ -368,7 +326,7 @@ class Event
      *
      * @return array
      */
-    public function getData()
+    public function getData(): array
     {
         // TODO Validation regarding to type
 
@@ -400,7 +358,7 @@ class Event
      *
      * @return string
      */
-    private function getItemsKey()
+    private function getItemsKey(): string
     {
         if ($this->type === self::VIEW_PROMOTION) {
             return 'promotions';
@@ -422,7 +380,7 @@ class Event
     {
         // TODO
 
-        switch($this->type) {
+        switch ($this->type) {
             case self::VIEW_ITEM:
             case self::VIEW_ITEM_LIST:
             case self::ADD_PAYMENT_INFO:
@@ -472,7 +430,7 @@ class Event
     {
         foreach ($properties as $property) {
             if (empty($this->{$property})) {
-                throw new \InvalidArgumentException("{$this->type}.$property must be set.");
+                throw new InvalidArgumentException("$this->type.$property must be set.");
             }
         }
     }
@@ -481,7 +439,7 @@ class Event
     {
         foreach ($this->items as $item) {
             if (!$item instanceof $class) {
-                throw new \InvalidArgumentException("Expected {$this->type}.items as instances of $class.");
+                throw new InvalidArgumentException("Expected $this->type.items as instances of $class.");
             }
         }
     }

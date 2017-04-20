@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\GoogleBundle\Twig;
 
 use Ekyna\Bundle\GoogleBundle\Tracking\TrackingRenderer;
@@ -14,30 +16,14 @@ use Twig\TwigFunction;
 class TrackingExtension extends AbstractExtension
 {
     /**
-     * @var TrackingRenderer
+     * @inheritDoc
      */
-    protected $renderer;
-
-
-    /**
-     * Constructor.
-     *
-     * @param TrackingRenderer $renderer
-     */
-    public function __construct(TrackingRenderer $renderer)
-    {
-        $this->renderer = $renderer;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction(
                 'google_tracking',
-                [$this->renderer, 'render'],
+                [TrackingRenderer::class, 'render'],
                 ['is_safe' => ['html']]
             )
         ];

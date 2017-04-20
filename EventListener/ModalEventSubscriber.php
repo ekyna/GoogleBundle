@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\GoogleBundle\EventListener;
 
-use Ekyna\Bundle\CoreBundle\Event\ModalEvent;
-use Ekyna\Bundle\CoreBundle\Modal\Modal;
 use Ekyna\Bundle\GoogleBundle\Tracking\TrackingRenderer;
+use Ekyna\Bundle\UiBundle\Event\ModalEvent;
+use Ekyna\Bundle\UiBundle\Model\Modal;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -14,10 +16,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class ModalEventSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var TrackingRenderer
-     */
-    protected $renderer;
+    protected TrackingRenderer $renderer;
 
 
     /**
@@ -35,7 +34,7 @@ class ModalEventSubscriber implements EventSubscriberInterface
      *
      * @param ModalEvent $event
      */
-    public function onModalResponse(ModalEvent $event)
+    public function onModalResponse(ModalEvent $event): void
     {
         $modal = $event->getModal();
 
@@ -53,9 +52,9 @@ class ModalEventSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             ModalEvent::MODAL_RESPONSE => ['onModalResponse', 0],

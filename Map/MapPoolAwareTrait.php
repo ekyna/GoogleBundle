@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\GoogleBundle\Map;
 
 /**
@@ -9,17 +11,10 @@ namespace Ekyna\Bundle\GoogleBundle\Map;
  */
 trait MapPoolAwareTrait
 {
-    /**
-     * @var MapPool
-     */
-    protected $mapPool;
+    protected MapPool $mapPool;
 
-    /**
-     * Sets the mapPool.
-     *
-     * @param MapPool $mapPool
-     */
-    public function setMapPool(MapPool $mapPool)
+
+    public function setMapPool(MapPool $mapPool): void
     {
         $this->mapPool = $mapPool;
     }

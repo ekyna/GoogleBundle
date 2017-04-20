@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\GoogleBundle\Tracking;
 
 /**
@@ -14,5 +16,5 @@ interface Item
      *
      * @return array
      */
-    public function getData();
+    public function getData(): array;
 }

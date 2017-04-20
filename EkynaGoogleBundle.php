@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\GoogleBundle;
 
 use Ekyna\Bundle\GoogleBundle\DependencyInjection\Compiler\ExtendIvoryMapBundle;
@@ -9,14 +11,11 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 /**
  * Class EkynaGoogleBundle
  * @package Ekyna\Bundle\GoogleBundle
- * @author Étienne Dauvergne <contact@ekyna.com>
+ * @author  Étienne Dauvergne <contact@ekyna.com>
  */
 class EkynaGoogleBundle extends Bundle
 {
-    /**
-     * @inheritDoc
-     */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new ExtendIvoryMapBundle());
     }

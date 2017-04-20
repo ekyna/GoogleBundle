@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Ekyna\Bundle\GoogleBundle\Tracking\Commerce;
@@ -12,25 +13,10 @@ use Ekyna\Bundle\GoogleBundle\Tracking\Item;
  */
 class Promotion implements Item
 {
-    /**
-     * @var string
-     */
-    private $id;
-
-    /**
-     * @var string
-     */
-    private $name;
-
-    /**
-     * @var string
-     */
-    private $creativeName;
-
-    /**
-     * @var string
-     */
-    private $creativeSlot;
+    private string $id;
+    private string $name;
+    private ?string $creativeName = null;
+    private ?string $creativeSlot = null;
 
 
     /**
@@ -104,7 +90,7 @@ class Promotion implements Item
     /**
      * @inheritDoc
      */
-    public function getData()
+    public function getData(): array
     {
         return array_filter([
             'id'            => $this->id,

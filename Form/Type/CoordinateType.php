@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\GoogleBundle\Form\Type;
 
 use Ivory\GoogleMap\Base\Coordinate;
@@ -8,11 +10,13 @@ use Ivory\GoogleMap\Overlay\Marker;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\Exception\ExceptionInterface;
+
+use function Symfony\Component\Translation\t;
 
 /**
  * Class CoordinateType
@@ -21,10 +25,7 @@ use Symfony\Component\PropertyAccess\Exception\ExceptionInterface;
  */
 class CoordinateType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('latitude', HiddenType::class, [
@@ -35,10 +36,7 @@ class CoordinateType extends AbstractType
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $map = new Map();
 
@@ -89,29 +87,23 @@ class CoordinateType extends AbstractType
         $view->vars['config'] = $config;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefaults([
-                'label'          => 'ekyna_google.field.coordinate',
-                'longitude_path' => 'longitude',
-                'latitude_path'  => 'latitude',
-                'map_height'     => 320,
-                'inherit_data'   => true,
-                'required'       => false,
+                'label'              => t('field.coordinate', [], 'EkynaGoogle'),
+                'longitude_path'     => 'longitude',
+                'latitude_path'      => 'latitude',
+                'map_height'         => 320,
+                'inherit_data'       => true,
+                'required'           => false,
             ])
             ->setAllowedTypes('longitude_path', 'string')
             ->setAllowedTypes('latitude_path', 'string')
             ->setAllowedTypes('map_height', 'int');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'ekyna_google_coordinate';
     }

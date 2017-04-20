@@ -3,7 +3,7 @@ GoogleBundle
 
 Google tools.
 
-## Instation
+## Installation
 TODO
 
 ## Configuration

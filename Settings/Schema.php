@@ -1,12 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\GoogleBundle\Settings;
 
-use Ekyna\Bundle\CoreBundle\Form\Type\CollectionType;
 use Ekyna\Bundle\GoogleBundle\Form\Type\CodeType;
 use Ekyna\Bundle\SettingBundle\Schema\AbstractSchema;
 use Ekyna\Bundle\SettingBundle\Schema\SettingsBuilder;
+use Ekyna\Bundle\UiBundle\Form\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
+
+use Symfony\Contracts\Translation\TranslatableInterface;
+
+use function Symfony\Component\Translation\t;
 
 /**
  * Class Schema
@@ -15,10 +21,7 @@ use Symfony\Component\Form\FormBuilderInterface;
  */
 class Schema extends AbstractSchema
 {
-    /**
-     * @inheritDoc
-     */
-    public function buildSettings(SettingsBuilder $builder)
+    public function buildSettings(SettingsBuilder $builder): void
     {
         $builder
             // TODO api credentials
@@ -31,40 +34,28 @@ class Schema extends AbstractSchema
             ->setAllowedTypes('codes', ['array']);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('codes', CollectionType::class, [
-                'label'        => 'ekyna_google.field.tracking',
+                'label'        => t('field.tracking', [], 'EkynaGoogle'),
                 'entry_type'   => CodeType::class,
                 'allow_add'    => true,
                 'allow_delete' => true,
             ]);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getLabel()
+    public function getLabel(): TranslatableInterface
     {
-        return 'ekyna_google.settings.label';
+        return t('settings.label', [], 'EkynaGoogle');
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getShowTemplate()
+    public function getShowTemplate(): string
     {
         return '@EkynaGoogle/Admin/Settings/show.html.twig';
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getFormTemplate()
+    public function getFormTemplate(): string
     {
         return '@EkynaGoogle/Admin/Settings/form.html.twig';
     }

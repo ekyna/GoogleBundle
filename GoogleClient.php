@@ -1,13 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\GoogleBundle;
+
+use Google\Client;
 
 /**
  * Class GoogleClient
  * @package Ekyna\Bundle\GoogleBundle
  * @author Étienne Dauvergne <contact@ekyna.com>
  */
-class GoogleClient extends \Google_Client
+class GoogleClient extends Client
 {
     /**
      * Constructor.

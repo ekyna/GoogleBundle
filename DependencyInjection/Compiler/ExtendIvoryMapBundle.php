@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\GoogleBundle\DependencyInjection\Compiler;
 
 use Ekyna\Bundle\GoogleBundle\Twig;
@@ -14,10 +16,7 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class ExtendIvoryMapBundle implements CompilerPassInterface
 {
-    /**
-     * @inheritDoc
-     */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $container
             ->getDefinition('ivory.google_map.twig.extension.map')

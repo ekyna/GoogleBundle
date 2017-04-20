@@ -1,0 +1,6 @@
+settings:
+    label: Google
+field:
+    coordinate: Coordinate
+    property_id: Property ID
+    tracking: Tracking

@@ -1,15 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\GoogleBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * Class TestController
  * @package Ekyna\Bundle\GoogleBundle\Controller
  * @author Étienne Dauvergne <contact@ekyna.com>
  */
-class TestController extends Controller
+class TestController extends AbstractController
 {
     public function testAction()
     {

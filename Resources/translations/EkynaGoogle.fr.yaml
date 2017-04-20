@@ -1,0 +1,6 @@
+settings:
+    label: Google
+field:
+    coordinate: Géolocalisation
+    property_id: Property ID
+    tracking: Tracking

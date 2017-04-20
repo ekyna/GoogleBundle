@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\GoogleBundle\Tracking;
 
-use Ekyna\Bundle\CookieConsentBundle\Service\Manager;
 use Ekyna\Bundle\GoogleBundle\Model\Code;
-use Ekyna\Bundle\SettingBundle\Manager\SettingsManagerInterface;
+use Ekyna\Bundle\SettingBundle\Manager\SettingManagerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Environment;
 use Twig\TemplateWrapper;
@@ -16,91 +17,41 @@ use Twig\TemplateWrapper;
  */
 class TrackingRenderer
 {
-    /**
-     * @var Environment
-     */
-    private $twig;
+    private Environment             $twig;
+    private RequestStack            $requestStack;
+    private SettingManagerInterface $settings;
+    private TrackingPool            $pool;
+    private array                   $config;
+    private bool                    $debug;
 
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
+    private ?TemplateWrapper $template = null;
+    /** @var Code[] */
+    private ?array $codes = null;
 
-    /**
-     * @var SettingsManagerInterface
-     */
-    private $settings;
-
-    /**
-     * @var Manager
-     */
-    private $consentManager;
-
-    /**
-     * @var TrackingPool
-     */
-    private $pool;
-
-    /**
-     * @var array
-     */
-    private $config;
-
-    /**
-     * @var bool
-     */
-    private $debug;
-
-    /**
-     * @var TemplateWrapper
-     */
-    private $template;
-
-    /**
-     * @var Code[]
-     */
-    private $codes;
-
-
-    /**
-     * Constructor.
-     *
-     * @param Environment              $twig
-     * @param RequestStack             $requestStack
-     * @param SettingsManagerInterface $settings
-     * @param Manager                  $consentManager
-     * @param TrackingPool             $pool
-     * @param array                    $config
-     * @param bool                     $debug
-     */
     public function __construct(
         Environment $twig,
         RequestStack $requestStack,
-        SettingsManagerInterface $settings,
-        Manager $consentManager,
+        SettingManagerInterface $settings,
         TrackingPool $pool,
         array $config = [],
         bool $debug = false
     ) {
-        $this->twig           = $twig;
-        $this->requestStack   = $requestStack;
-        $this->settings       = $settings;
-        $this->consentManager = $consentManager;
-        $this->pool           = $pool;
+        $this->twig = $twig;
+        $this->requestStack = $requestStack;
+        $this->settings = $settings;
+        $this->pool = $pool;
 
         $this->config = array_replace($config, [
             'template' => '@EkynaGoogle/tracking.html.twig',
             'enabled'  => true,
         ]);
-        $this->debug  = $debug;
+        $this->debug = $debug;
     }
 
     /**
-     * Renders the google tracking script.
-     *
-     * @return string
+     * Renders the Google tracking script.
      */
-    public function render()
+    public function render(): string
     {
         if (!$this->config['enabled']) {
             return '';
@@ -109,10 +60,6 @@ class TrackingRenderer
         if (empty($config = $this->getCodes(Code::TYPE_CONFIG))) {
             return '';
         }
-
-        /*if (!$this->consentManager->isCategoryAllowed(Category::ANALYTIC)) {
-            return '';
-        }*/
 
         $events = $this->pool->getEvents();
 
@@ -139,6 +86,7 @@ class TrackingRenderer
 
         $block = $this->requestStack->getCurrentRequest()->isXmlHttpRequest() ? 'events' : 'init';
 
+        /** @noinspection PhpUnhandledExceptionInspection */
         return $this->getTemplate()->renderBlock($block, [
             'debug'  => $this->debug,
             'config' => $config,
@@ -147,9 +95,7 @@ class TrackingRenderer
     }
 
     /**
-     * Returns the configured google tracking codes.
-     *
-     * @param string $type
+     * Returns the configured Google tracking codes.
      *
      * @return Code[]
      */
@@ -160,8 +106,8 @@ class TrackingRenderer
         }
 
         // TODO Warning: Will fetch the wrong code on cross domain XHR
-        $request = $this->requestStack->getMasterRequest();
-        $host    = $request->getHost();
+        $request = $this->requestStack->getMainRequest();
+        $host = $request->getHost();
 
         return array_filter($this->codes, function (Code $code) use ($type, $host) {
             if ($type !== $code->getType()) {
@@ -178,15 +124,14 @@ class TrackingRenderer
 
     /**
      * Returns the template.
-     *
-     * @return TemplateWrapper
      */
-    private function getTemplate()
+    private function getTemplate(): TemplateWrapper
     {
         if ($this->template) {
             return $this->template;
         }
 
+        /** @noinspection PhpUnhandledExceptionInspection */
         return $this->template = $this->twig->load($this->config['template']);
     }
 }

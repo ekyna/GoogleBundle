@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\GoogleBundle\Model;
 
 /**
@@ -12,20 +14,9 @@ class Code
     public const TYPE_CONFIG     = 'config';
     public const TYPE_CONVERSION = 'conversion';
 
-    /**
-     * @var string
-     */
-    private $value;
-
-    /**
-     * @var string
-     */
-    private $type;
-
-    /**
-     * @var string
-     */
-    private $host;
+    private ?string $value = null;
+    private ?string $type  = null;
+    private ?string $host  = null;
 
 
     /**

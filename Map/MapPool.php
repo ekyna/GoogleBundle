@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\GoogleBundle\Map;
 
 use Ivory\GoogleMap\Map;
@@ -11,44 +13,25 @@ use Ivory\GoogleMap\Map;
  */
 class MapPool
 {
-    /**
-     * @var Map[]
-     */
-    private $maps;
+    /** @var Map[] */
+    private array $maps;
 
 
-    /**
-     * Constructor.
-     */
     public function __construct()
     {
         $this->clear();
     }
 
-    /**
-     * Adds the map.
-     *
-     * @param Map $map
-     *
-     * @return MapPool
-     */
-    public function add(Map $map)
+    public function add(Map $map): MapPool
     {
-        if (false === $index = $this->index($map)) {
+        if (false === $this->index($map)) {
             $this->maps[] = $map;
         }
 
         return $this;
     }
 
-    /**
-     * Removes the map.
-     *
-     * @param Map $map
-     *
-     * @return MapPool
-     */
-    public function remove(Map $map)
+    public function remove(Map $map): MapPool
     {
         if (false !== $index = $this->index($map)) {
             unset($this->maps[$index]);
@@ -58,11 +41,9 @@ class MapPool
     }
 
     /**
-     * Returns all the maps and clears the pool.
-     *
      * @return Map[]
      */
-    public function all()
+    public function all(): array
     {
         $maps = $this->maps;
 
@@ -86,7 +67,7 @@ class MapPool
     /**
      * Clears the pool.
      */
-    public function clear()
+    public function clear(): void
     {
         $this->maps = [];
     }

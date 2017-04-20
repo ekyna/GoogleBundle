@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Bundle\GoogleBundle\Twig;
 
 use Ekyna\Bundle\GoogleBundle\Map\MapPoolAwareTrait;
@@ -16,20 +18,14 @@ class MapExtension extends BaseExtension
     use MapPoolAwareTrait;
 
 
-    /**
-     * @inheritDoc
-     */
-    public function render(Map $map, array $attributes = [])
+    public function render(Map $map, array $attributes = []): string
     {
         $this->mapPool->add($map);
 
         return parent::render($map, $attributes);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function renderHtml(Map $map, array $attributes = [])
+    public function renderHtml(Map $map, array $attributes = []): string
     {
         $this->mapPool->add($map);
 

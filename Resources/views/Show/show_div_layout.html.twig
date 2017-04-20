@@ -11,7 +11,7 @@
             {{ ivory_google_map(value) }}
             {% endif %}
         {%- else -%}
-            <em>{{ 'ekyna_core.value.none'|trans }}</em>
+            <em>{{ 'value.none'|trans({}, 'EkynaUi') }}</em>
         {%- endif %}
     </div>
 {% endapply %}
@@ -26,9 +26,9 @@
         <table class="table table-condensed">
             <thead>
             <tr>
-                <th>{{ 'ekyna_core.field.value'|trans }}</th>
-                <th>{{ 'ekyna_core.field.type'|trans }}</th>
-                <th>{{ 'ekyna_core.field.host'|trans }}</th>
+                <th>{{ 'field.value'|trans({}, 'EkynaUi') }}</th>
+                <th>{{ 'field.type'|trans({}, 'EkynaUi') }}</th>
+                <th>{{ 'field.host'|trans({}, 'EkynaUi') }}</th>
             </tr>
             </thead>
             <tbody>
@@ -41,7 +41,7 @@
             {% else %}
             <tr>
                 <td colspan="3">
-                    <em>{{ 'ekyna_core.value.none'|trans }}</em>
+                    <em>{{ 'value.none'|trans({}, 'EkynaUi') }}</em>
                 </td>
             </tr>
             {% endfor %}
