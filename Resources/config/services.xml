@@ -19,6 +19,12 @@
             <tag name="form.js" selector=".ekyna-google-coordinate" path="ekyna-form/google-coordinate" />
         </service>
 
+        <!-- Show types -->
+        <service id="ekyna_google.show.google_map_type"
+                 class="Ekyna\Bundle\GoogleBundle\Show\Type\GoogleMapType">
+            <tag name="ekyna_admin.show.type" alias="google_map"/>
+        </service>
+
         <!-- Settings Schema -->
         <service id="ekyna_google.settings" class="Ekyna\Bundle\GoogleBundle\Settings\Schema">
             <tag name="ekyna_setting.schema" namespace="google" position="90" />

@@ -1,0 +1,14 @@
+{% block widget_attributes -%}{% for key, value in attr %} {{ key }}="{{ value }}"{% endfor -%}{% endblock widget_attributes %}
+
+{% block google_map_widget %}
+{% spaceless %}
+    {% set attr = attr|merge({'class': ('show-widget show-widget-block ' ~ attr.class|default(''))|trim }) %}
+    <div{{ block('widget_attributes') }}>
+        {% if value is not empty -%}
+            {{ google_map(value) }}
+        {%- else -%}
+            <em>{{ 'ekyna_core.value.none'|trans }}</em>
+        {%- endif %}
+    </div>
+{% endspaceless %}
+{% endblock google_map_widget %}
