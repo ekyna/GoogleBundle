@@ -7,12 +7,11 @@ use Ekyna\Bundle\GoogleBundle\Model\TrackingCode;
 use Ekyna\Bundle\SettingBundle\Schema\AbstractSchema;
 use Ekyna\Bundle\SettingBundle\Schema\SettingsBuilder;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints;
 
 /**
  * Class Schema
  * @package Ekyna\Bundle\GoogleBundle\Settings
- * @author Étienne Dauvergne <contact@ekyna.com>
+ * @author  Étienne Dauvergne <contact@ekyna.com>
  */
 class Schema extends AbstractSchema
 {
@@ -26,8 +25,7 @@ class Schema extends AbstractSchema
             ->setDefaults(array_merge([
                 'tracking_code' => new TrackingCode(),
             ], $this->defaults))
-            ->setAllowedTypes('tracking_code', 'Ekyna\Bundle\GoogleBundle\Model\TrackingCode')
-        ;
+            ->setAllowedTypes('tracking_code', 'Ekyna\Bundle\GoogleBundle\Model\TrackingCode');
     }
 
     /**
@@ -36,8 +34,7 @@ class Schema extends AbstractSchema
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('tracking_code', TrackingCodeType::class)
-        ;
+            ->add('tracking_code', TrackingCodeType::class);
     }
 
     /**
@@ -62,13 +59,5 @@ class Schema extends AbstractSchema
     public function getFormTemplate()
     {
         return 'EkynaGoogleBundle:Admin/Settings:form.html.twig';
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getName()
-    {
-        return 'ekyna_google_settings';
     }
 }

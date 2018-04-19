@@ -14,7 +14,6 @@
 
         <!-- Form types -->
         <service id="ekyna_google.coordinate.form_type" class="Ekyna\Bundle\GoogleBundle\Form\Type\CoordinateType">
-            <argument type="service" id="ivory_google_map.map.builder" />
             <tag name="form.type" />
             <tag name="form.js" selector=".ekyna-google-coordinate" path="ekyna-form/google-coordinate" />
         </service>
@@ -29,6 +28,9 @@
         <service id="ekyna_google.settings" class="Ekyna\Bundle\GoogleBundle\Settings\Schema">
             <tag name="ekyna_setting.schema" namespace="google" position="90" />
         </service>
+
+        <!-- Settings Schema -->
+        <service id="ekyna_google.map_pool" class="Ekyna\Bundle\GoogleBundle\Twig\MapPool"/>
 
         <!-- Twig Extensions -->
         <service id="ekyna_google.twig.google_extension" class="Ekyna\Bundle\GoogleBundle\Twig\GoogleExtension">

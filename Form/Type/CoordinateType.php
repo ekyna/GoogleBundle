@@ -2,46 +2,37 @@
 
 namespace Ekyna\Bundle\GoogleBundle\Form\Type;
 
-use Ivory\GoogleMapBundle\Entity\Marker;
-use Ivory\GoogleMapBundle\Model\MapBuilder;
+use Ivory\GoogleMap\Base\Coordinate;
+use Ivory\GoogleMap\Map;
+use Ivory\GoogleMap\Overlay\Marker;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\Exception\ExceptionInterface;
 
 /**
  * Class CoordinateType
  * @package Ekyna\Bundle\GoogleBundle\Form\Type
- * @author Étienne Dauvergne <contact@ekyna.com>
+ * @author  Étienne Dauvergne <contact@ekyna.com>
  */
 class CoordinateType extends AbstractType
 {
-    /**
-     * @var MapBuilder
-     */
-    protected $mapBuilder;
-
-
-    /**
-     * Constructor.
-     *
-     * @param MapBuilder   $mapBuilder
-     */
-    public function __construct(MapBuilder $mapBuilder)
-    {
-        $this->mapBuilder = $mapBuilder;
-    }
-
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('latitude', HiddenType::class)
-            ->add('longitude', HiddenType::class);
+            ->add('latitude', HiddenType::class, [
+                'property_path' => $options['latitude_path'],
+            ])
+            ->add('longitude', HiddenType::class, [
+                'property_path' => $options['longitude_path'],
+            ]);
     }
 
     /**
@@ -49,32 +40,49 @@ class CoordinateType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $this->mapBuilder->setHtmlContainerId($view->vars['id'].'_map_canvas');
-        $this->mapBuilder->setAutoZoom(true);
-        $this->mapBuilder->setMapOptions([
-            'minZoom' => 3,
-            'maxZoom' => 18,
+        $map = new Map();
+
+        $map->setHtmlId($view->vars['id'] . '_map_canvas');
+        $map->setAutoZoom(true);
+        $map->setMapOptions([
+            'minZoom'          => 3,
+            'maxZoom'          => 18,
             'disableDefaultUI' => true,
         ]);
-        $this->mapBuilder->setStylesheetOptions([
-            'width' => '100%',
-            'height' => '320px',
+        $map->setStylesheetOptions([
+            'width'  => '100%',
+            'height' => $options['map_height'] . 'px',
         ]);
 
-        $map = $this->mapBuilder->build();
+        $latitude = null;
+        $longitude = null;
+        $zoom = 14;
 
-        $marker = new Marker();
-        /** @var \Ivory\GoogleMap\Base\Coordinate $coordinate */
-        if (null !== $coordinate = $form->getData()) {
-            if (null !== $coordinate->getLatitude() && null !== $coordinate->getLongitude()) {
-                $marker->setPosition($coordinate);
-            }
+        $data = $form->getData();
+        $accessor = PropertyAccess::createPropertyAccessor();
+
+        try {
+            $latitude = $accessor->getValue($data, $options['latitude_path']);
+            $longitude = $accessor->getValue($data, $options['longitude_path']);
+        } catch (ExceptionInterface $e) {
         }
-        $map->addMarker($marker);
+
+        if (!$latitude && !$longitude) {
+            $latitude = 46.52863469527167;
+            $longitude = 2.43896484375;
+            $zoom = 5;
+        }
+
+        $coordinate = new Coordinate($latitude, $longitude);
+
+        $marker = new Marker($coordinate);
+        $map->getOverlayManager()->addMarker($marker);
+        $map->setCenter($coordinate);
+        $map->setMapOption('zoom', $zoom);
 
         $config = [
-            'map_var' => $map->getJavascriptVariable(),
-            'marker_var' => $marker->getJavascriptVariable(),
+            'map_var'    => $map->getVariable(),
+            'marker_var' => $marker->getVariable(),
         ];
 
         $view->vars['map'] = $map;
@@ -86,11 +94,16 @@ class CoordinateType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'label' => 'ekyna_google.field.coordinate',
-            'data_class' => 'Ivory\GoogleMap\Base\Coordinate',
-            'by_reference' => false,
-        ]);
+        $resolver
+            ->setDefaults([
+                'label'          => 'ekyna_google.field.coordinate',
+                'longitude_path' => 'longitude',
+                'latitude_path'  => 'latitude',
+                'map_height'     => 320,
+                'inherit_data'   => true,
+            ])
+            ->setAllowedTypes('longitude_path', 'string')
+            ->setAllowedTypes('latitude_path', 'string');
     }
 
     /**

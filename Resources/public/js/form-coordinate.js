@@ -14,16 +14,16 @@ define('ekyna-form/google-coordinate', ['jquery'], function($) {
             that.geocodeTimeout = null;
 
             // Address fields
-            var $form = this.$elem.parents('form').eq(0);
-            that.$street = $form.find('[data-role="street"]');
+            var $form = this.$elem.closest('.address');
+            that.$street = $form.find('.address-street');
             that.initFieldHandler(that.$street);
-            that.$postalCode = $form.find('[data-role="postal-code"]');
+            that.$postalCode = $form.find('.address-postal-code');
             that.initFieldHandler(that.$postalCode);
-            that.$city = $form.find('[data-role="city"]');
+            that.$city = $form.find('.address-city');
             that.initFieldHandler(that.$city);
-            that.$country = $form.find('[data-role="country"]');
+            that.$country = $form.find('.address-country');
             that.initFieldHandler(that.$country);
-            that.$state = $form.find('[data-role="state"]');
+            that.$state = $form.find('.address-state');
             that.initFieldHandler(that.$state);
 
             // Coordinate fields
@@ -39,6 +39,16 @@ define('ekyna-form/google-coordinate', ['jquery'], function($) {
             that.geocoder = new google.maps.Geocoder();
 
             that.geocodeAddress();
+
+            // Bootstrap tabs
+            var $bsTabPane = $form.closest('.tab-pane');
+            if ($bsTabPane.length) {
+                $('a[href="#' + $bsTabPane.attr('id') + '"]').on("shown.bs.tab", function() {
+                    var center=that.map.getCenter();
+                    google.maps.event.trigger(that.map, "resize");
+                    that.map.setCenter(center);
+                });
+            }
         },
         initFieldHandler: function ($field) {
             var that = this;
@@ -50,11 +60,16 @@ define('ekyna-form/google-coordinate', ['jquery'], function($) {
             });
         },
         geocodeAddress: function() {
-            var that = this;
-            that.geocoder.geocode({'address': that.buildAddress()}, function(results, status) {
-                if (status == google.maps.GeocoderStatus.OK) {
+            var that = this,
+            address = that.buildAddress();
+            if (0 === address.length) {
+                return;
+            }
+            that.geocoder.geocode({'address': address}, function(results, status) {
+                if (status === google.maps.GeocoderStatus.OK) {
                     var location = results[0].geometry.location;
 
+                    google.maps.event.trigger(that.map, "resize");
                     that.map.setCenter(location);
                     that.marker.setPosition(location);
 
@@ -70,13 +85,13 @@ define('ekyna-form/google-coordinate', ['jquery'], function($) {
         buildAddress: function() {
             var that = this, parts = [];
 
-            if (that.$street.val().length) parts.push(that.$street.val());
-            if (that.$postalCode.val().length) parts.push(that.$postalCode.val());
-            if (that.$city.val().length) parts.push(that.$city.val());
-            if (that.$country.val().length) parts.push(that.$country.val());
-            if (that.$state.val().length) parts.push(that.$state.val());
+            if (that.$street.val()) parts.push(that.$street.val());
+            if (that.$postalCode.val()) parts.push(that.$postalCode.val());
+            if (that.$city.val()) parts.push(that.$city.val());
+            if (that.$country.val()) parts.push(that.$country.val());
+            if (that.$state && that.$state.val()) parts.push(that.$state.val());
 
-            return parts.join(', ');
+            return parts.join(' ');
         }
     };
 

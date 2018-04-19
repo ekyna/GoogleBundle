@@ -10,7 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class TrackingCodeType
  * @package Ekyna\Bundle\GoogleBundle\Form\Type
- * @author Étienne Dauvergne <contact@ekyna.com>
+ * @author  Étienne Dauvergne <contact@ekyna.com>
  */
 class TrackingCodeType extends AbstractType
 {
@@ -21,14 +21,13 @@ class TrackingCodeType extends AbstractType
     {
         $builder
             ->add('propertyId', TextType::class, [
-                'label' => 'ekyna_google.tracking_code.field.property_id',
+                'label'    => 'ekyna_google.tracking_code.field.property_id',
                 'required' => false,
             ])
             ->add('domain', TextType::class, [
-                'label' => 'ekyna_google.tracking_code.field.domain',
+                'label'    => 'ekyna_google.tracking_code.field.domain',
                 'required' => false,
-            ])
-        ;
+            ]);
     }
 
     /**
@@ -37,7 +36,7 @@ class TrackingCodeType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'label' => 'ekyna_google.field.tracking_code',
+            'label'      => 'ekyna_google.field.tracking_code',
             'data_class' => 'Ekyna\Bundle\GoogleBundle\Model\TrackingCode',
         ]);
     }

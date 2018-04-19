@@ -2,10 +2,14 @@
 
 {% block google_map_widget %}
 {% spaceless %}
-    {% set attr = attr|merge({'class': ('show-widget show-widget-block ' ~ attr.class|default(''))|trim }) %}
+    {% set attr = attr|merge({'class': ('show-widget ' ~ attr.class|default(''))|trim }) %}
     <div{{ block('widget_attributes') }}>
         {% if value is not empty -%}
-            {{ google_map(value) }}
+            {% if static %}
+            <img src="{{ ivory_google_map_static(value) }}">
+            {% else %}
+            {{ ivory_google_map(value) }}
+            {% endif %}
         {%- else -%}
             <em>{{ 'ekyna_core.value.none'|trans }}</em>
         {%- endif %}
