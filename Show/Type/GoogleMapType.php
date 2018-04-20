@@ -92,7 +92,7 @@ class GoogleMapType extends AbstractType
                 'map_static'     => true,
                 'map_width'      => 640,
                 'map_height'     => 320,
-                'map_zoom'       => 14,
+                'map_zoom'       => 12,
                 'longitude_path' => 'longitude',
                 'latitude_path'  => 'latitude',
             ])

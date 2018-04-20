@@ -2,7 +2,7 @@ ekyna_google:
     settings:
         label: Google
     field:
-        coordinate: Coordonnées
+        coordinate: Géolocalisation
     tracking_code:
         field:
             property_id: Property ID

@@ -56,7 +56,7 @@ class CoordinateType extends AbstractType
 
         $latitude = null;
         $longitude = null;
-        $zoom = 14;
+        $zoom = 12;
 
         $data = $form->getData();
         $accessor = PropertyAccess::createPropertyAccessor();
@@ -101,9 +101,11 @@ class CoordinateType extends AbstractType
                 'latitude_path'  => 'latitude',
                 'map_height'     => 320,
                 'inherit_data'   => true,
+                'required'       => false,
             ])
             ->setAllowedTypes('longitude_path', 'string')
-            ->setAllowedTypes('latitude_path', 'string');
+            ->setAllowedTypes('latitude_path', 'string')
+            ->setAllowedTypes('map_height', 'int');
     }
 
     /**
