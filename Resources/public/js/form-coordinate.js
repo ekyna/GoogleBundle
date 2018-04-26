@@ -1,7 +1,7 @@
-define('ekyna-form/google-coordinate', ['jquery'], function($) {
+define('ekyna-form/google-coordinate', ['jquery'], function ($) {
     "use strict";
 
-    var CoordinateWidget = function($elem) {
+    var CoordinateWidget = function ($elem) {
         this.$elem = $($elem);
         this.defaults = {types: [], controls: []};
         this.config = $.extend({}, this.defaults, this.$elem.data('config'));
@@ -10,62 +10,93 @@ define('ekyna-form/google-coordinate', ['jquery'], function($) {
     CoordinateWidget.prototype = {
         constructor: CoordinateWidget,
         init: function () {
-            var that = this;
-            that.geocodeTimeout = null;
+            this.googleInitCount = 0;
+            this.geocodeTimeout = null;
 
             // Address fields
             var $form = this.$elem.closest('.address');
-            that.$street = $form.find('.address-street');
-            that.initFieldHandler(that.$street);
-            that.$postalCode = $form.find('.address-postal-code');
-            that.initFieldHandler(that.$postalCode);
-            that.$city = $form.find('.address-city');
-            that.initFieldHandler(that.$city);
-            that.$country = $form.find('.address-country');
-            that.initFieldHandler(that.$country);
-            that.$state = $form.find('.address-state');
-            that.initFieldHandler(that.$state);
+            this.$street = $form.find('.address-street');
+            this.$postalCode = $form.find('.address-postal-code');
+            this.$city = $form.find('.address-city');
+            this.$country = $form.find('.address-country');
+            this.$state = $form.find('.address-state');
 
             // Coordinate fields
-            var id = that.$elem.attr('id');
-            that.$latInput = that.$elem.find('#' + id + '_latitude');
-            that.$lngInput = that.$elem.find('#' + id + '_longitude');
+            var id = this.$elem.attr('id');
+            this.$latInput = this.$elem.find('#' + id + '_latitude');
+            this.$lngInput = this.$elem.find('#' + id + '_longitude');
 
             // Map and marker
-            that.map = window[that.config['map_var']];
-            that.marker = window[that.config['marker_var']];
+            this.map = window[this.config['map_var']];
+            this.marker = window[this.config['marker_var']];
 
-            // Geocoder
-            that.geocoder = new google.maps.Geocoder();
+            this.initGoogle();
 
-            that.geocodeAddress();
+        },
+        initGoogle: function () {
+            var that = this;
+            if (!window.hasOwnProperty('google') || !google.hasOwnProperty('maps')) {
+                this.googleInitCount++;
+                if (10 > this.googleInitCount) {
+                    setTimeout(function () {
+                        that.initGoogle()
+                    }, 200);
+                }
+
+                return;
+            }
+
+            this.geocoder = new google.maps.Geocoder();
+
+            this.initFieldHandler(this.$street);
+            this.initFieldHandler(this.$postalCode);
+            this.initFieldHandler(this.$city);
+            this.initFieldHandler(this.$country);
+            this.initFieldHandler(this.$state);
+
+            this.geocodeAddress();
 
             // Bootstrap tabs
-            var $bsTabPane = $form.closest('.tab-pane');
+            var $bsTabPane = this.$elem.closest('.tab-pane');
             if ($bsTabPane.length) {
-                $('a[href="#' + $bsTabPane.attr('id') + '"]').on("shown.bs.tab", function() {
-                    var center=that.map.getCenter();
-                    google.maps.event.trigger(that.map, "resize");
-                    that.map.setCenter(center);
+                $('a[href="#' + $bsTabPane.attr('id') + '"]').on("shown.bs.tab", function () {
+                    that.redraw();
                 });
             }
+
+            // Window resize
+            $(window).on('resize', function () {
+                that.redraw();
+            });
+        },
+        redraw: function () {
+            var center = this.map.getCenter();
+            google.maps.event.trigger(this.map, "resize");
+            this.map.setCenter(center);
         },
         initFieldHandler: function ($field) {
             var that = this;
-            $field.on('change', function() {
+            $field.on('change', function () {
                 if (null !== that.geocodeTimeout) {
                     clearTimeout(that.geocodeTimeout);
                 }
-                that.geocodeTimeout = setTimeout(function() { that.geocodeAddress(); }, 3000);
+                that.geocodeTimeout = setTimeout(function () {
+                    that.geocodeAddress();
+                }, 3000);
             });
         },
-        geocodeAddress: function() {
+        geocodeAddress: function () {
             var that = this,
-            address = that.buildAddress();
+                address = this.buildAddress();
+
             if (0 === address.length) {
+                that.$latInput.val(null);
+                that.$lngInput.val(null);
+
                 return;
             }
-            that.geocoder.geocode({'address': address}, function(results, status) {
+
+            this.geocoder.geocode({'address': address}, function (results, status) {
                 if (status === google.maps.GeocoderStatus.OK) {
                     var location = results[0].geometry.location;
 
@@ -82,22 +113,22 @@ define('ekyna-form/google-coordinate', ['jquery'], function($) {
                 }
             });
         },
-        buildAddress: function() {
-            var that = this, parts = [];
+        buildAddress: function () {
+            var parts = [];
 
-            if (that.$street.val()) parts.push(that.$street.val());
-            if (that.$postalCode.val()) parts.push(that.$postalCode.val());
-            if (that.$city.val()) parts.push(that.$city.val());
-            if (that.$country.val()) parts.push(that.$country.val());
-            if (that.$state && that.$state.val()) parts.push(that.$state.val());
+            if (this.$street.val()) parts.push(this.$street.val());
+            if (this.$postalCode.val()) parts.push(this.$postalCode.val());
+            if (this.$city.val()) parts.push(this.$city.val());
+            if (this.$country.val()) parts.push(this.$country.val());
+            if (this.$state && this.$state.val()) parts.push(this.$state.val());
 
             return parts.join(' ');
         }
     };
 
     return {
-        init: function($element) {
-            $element.each(function() {
+        init: function ($element) {
+            $element.each(function () {
                 new CoordinateWidget($(this)).init();
             });
         }
