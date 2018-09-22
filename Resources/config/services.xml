@@ -29,7 +29,7 @@
             <tag name="ekyna_setting.schema" namespace="google" position="90" />
         </service>
 
-        <!-- Settings Schema -->
+        <!-- Map pool -->
         <service id="ekyna_google.map_pool" class="Ekyna\Bundle\GoogleBundle\Twig\MapPool"/>
 
         <!-- Twig Extensions -->
