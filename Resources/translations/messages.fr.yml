@@ -3,7 +3,4 @@ ekyna_google:
         label: Google
     field:
         coordinate: Géolocalisation
-    tracking_code:
-        field:
-            property_id: Property ID
-            domain: Domaine
+        property_id: Property ID

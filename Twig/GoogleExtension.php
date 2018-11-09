@@ -12,13 +12,12 @@ use Ekyna\Bundle\SettingBundle\Manager\SettingsManagerInterface;
 class GoogleExtension extends \Twig_Extension
 {
     const GA_TRACKING_CODE = <<<EOT
+<script async src="https://www.googletagmanager.com/gtag/js?id=__CODE__"></script>
 <script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-    ga('create', '%s', %s);
-    ga('send', 'pageview');
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', '__CODE__');
 </script>
 EOT;
 
@@ -62,28 +61,10 @@ EOT;
      */
     public function getGoogleTracking()
     {
-        /** @var \Ekyna\Bundle\GoogleBundle\Model\TrackingCode $trackingCode */
-        $trackingCode = $this->settingManager->getParameter('google.tracking_code');
-        if (!$this->debug && 0 < strlen($trackingCode->getPropertyId())) {
-            $domain = $trackingCode->getDomain();
-            if (0 === strlen($domain)) {
-                $domain = 'auto';
-            }
-            if (in_array($trackingCode->getDomain(), ['none', 'auto'])) {
-                $domain = sprintf("'%s'", $domain);
-            } else {
-                $domain = sprintf("{'cookieDomain': '%s'}", $domain);
-            }
-            return sprintf(self::GA_TRACKING_CODE, $trackingCode->getPropertyId(), $domain);
+        $propertyId = $this->settingManager->getParameter('google.property_id');
+        if (!$this->debug && !empty($propertyId)) {
+            return str_replace('__CODE__', $propertyId, self::GA_TRACKING_CODE);
         }
         return '';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'ekyna_google';
     }
 }

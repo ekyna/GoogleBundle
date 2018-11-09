@@ -2,10 +2,9 @@
 
 namespace Ekyna\Bundle\GoogleBundle\Settings;
 
-use Ekyna\Bundle\GoogleBundle\Form\Type\TrackingCodeType;
-use Ekyna\Bundle\GoogleBundle\Model\TrackingCode;
 use Ekyna\Bundle\SettingBundle\Schema\AbstractSchema;
 use Ekyna\Bundle\SettingBundle\Schema\SettingsBuilder;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
@@ -23,9 +22,10 @@ class Schema extends AbstractSchema
         $builder
             // TODO api credentials
             ->setDefaults(array_merge([
-                'tracking_code' => new TrackingCode(),
+                'tracking_code' => null,
+                'property_id' => null,
             ], $this->defaults))
-            ->setAllowedTypes('tracking_code', 'Ekyna\Bundle\GoogleBundle\Model\TrackingCode');
+            ->setAllowedTypes('property_id', ['null', 'string']);
     }
 
     /**
@@ -34,7 +34,10 @@ class Schema extends AbstractSchema
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('tracking_code', TrackingCodeType::class);
+            ->add('property_id', TextType::class, [
+                'label'    => 'ekyna_google.field.property_id',
+                'required' => false,
+            ]);
     }
 
     /**
