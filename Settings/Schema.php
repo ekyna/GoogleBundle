@@ -53,7 +53,7 @@ class Schema extends AbstractSchema
      */
     public function getShowTemplate()
     {
-        return 'EkynaGoogleBundle:Admin/Settings:show.html.twig';
+        return '@EkynaGoogle/Admin/Settings/show.html.twig';
     }
 
     /**
@@ -61,6 +61,6 @@ class Schema extends AbstractSchema
      */
     public function getFormTemplate()
     {
-        return 'EkynaGoogleBundle:Admin/Settings:form.html.twig';
+        return '@EkynaGoogle/Admin/Settings/form.html.twig';
     }
 }
