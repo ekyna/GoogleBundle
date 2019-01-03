@@ -22,11 +22,11 @@ class ExtendIvoryMapBundle implements CompilerPassInterface
         $container
             ->getDefinition('ivory.google_map.twig.extension.map')
             ->setClass(Twig\MapExtension::class)
-            ->addMethodCall('setMapPool', [new Reference('ekyna_google.map_pool')]);
+            ->addMethodCall('setMapPool', [new Reference('ekyna_google.map.pool')]);
 
         $container
             ->getDefinition('ivory.google_map.twig.extension.api')
             ->setClass(Twig\ApiExtension::class)
-            ->addMethodCall('setMapPool', [new Reference('ekyna_google.map_pool')]);
+            ->addMethodCall('setMapPool', [new Reference('ekyna_google.map.pool')]);
     }
 }

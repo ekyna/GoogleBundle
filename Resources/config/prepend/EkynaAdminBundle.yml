@@ -1,4 +1,4 @@
 ekyna_admin:
     show:
         templates:
-            - EkynaGoogleBundle:Show:show_div_layout.html.twig
+            - "@EkynaGoogle/Show/show_div_layout.html.twig"

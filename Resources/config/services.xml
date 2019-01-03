@@ -9,7 +9,7 @@
 
         <!-- Google client -->
         <service id="ekyna_google.client" class="Ekyna\Bundle\GoogleBundle\GoogleClient">
-            <argument>%ekyna_google.client_config%</argument>
+            <argument type="collection"/><!-- Replace d by DI extension -->
         </service>
 
         <!-- Form types -->
@@ -30,12 +30,23 @@
         </service>
 
         <!-- Map pool -->
-        <service id="ekyna_google.map_pool" class="Ekyna\Bundle\GoogleBundle\Twig\MapPool"/>
+        <service id="ekyna_google.map.pool" class="Ekyna\Bundle\GoogleBundle\Map\MapPool"/>
+
+        <!-- Tracking pool -->
+        <service id="ekyna_google.tracking.pool" class="Ekyna\Bundle\GoogleBundle\Tracking\TrackingPool"/>
+
+        <!-- Tracking renderer -->
+        <service id="ekyna_google.tracking.renderer" class="Ekyna\Bundle\GoogleBundle\Tracking\TrackingRenderer">
+            <argument type="service" id="Twig\Environment"/>
+            <argument type="service" id="Symfony\Component\HttpFoundation\RequestStack"/>
+            <argument type="service" id="ekyna_setting.manager"/>
+            <argument type="service" id="ekyna_google.tracking.pool"/>
+            <argument type="collection"/><!-- Replace d by DI extension -->
+        </service>
 
         <!-- Twig Extensions -->
-        <service id="ekyna_google.twig.google_extension" class="Ekyna\Bundle\GoogleBundle\Twig\GoogleExtension">
-            <argument type="service" id="ekyna_setting.manager" />
-            <argument>%kernel.debug%</argument>
+        <service id="ekyna_google.twig.tracking_extension" class="Ekyna\Bundle\GoogleBundle\Twig\TrackingExtension">
+            <argument type="service" id="ekyna_google.tracking.renderer" />
             <tag name="twig.extension" />
         </service>
 

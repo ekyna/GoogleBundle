@@ -21,10 +21,15 @@ class EkynaGoogleExtension extends Extension
     {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
-
-        $container->setParameter('ekyna_google.client_config', $config['client']);
-
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
+
+        $container
+            ->getDefinition('ekyna_google.client')
+            ->replaceArgument(0, $config['client']);
+
+        $container
+            ->getDefinition('ekyna_google.tracking.renderer')
+            ->replaceArgument(4, $config['tracking']);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Ekyna\Bundle\GoogleBundle\Twig;
 
+use Ekyna\Bundle\GoogleBundle\Map\MapPoolAwareTrait;
 use Ivory\GoogleMapBundle\Twig\ApiExtension as BaseExtension;
 
 /**

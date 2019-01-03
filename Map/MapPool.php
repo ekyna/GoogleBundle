@@ -1,6 +1,6 @@
 <?php
 
-namespace Ekyna\Bundle\GoogleBundle\Twig;
+namespace Ekyna\Bundle\GoogleBundle\Map;
 
 use Ivory\GoogleMap\Map;
 

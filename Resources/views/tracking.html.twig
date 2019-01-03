@@ -1,0 +1,25 @@
+{%- block init -%}
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ code }}"></script>
+<script>
+    {% if debug -%}
+    window['ga-disable-{{ code }}'] = true;
+    {%- endif %}
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', '{{ code }}');
+    {{ block('event_lines') }}
+</script>
+{%- endblock -%}
+
+
+{%- block events -%}
+<script>{{ block('event_lines') }}</script>
+{%- endblock -%}
+
+
+{%- block event_lines -%}
+{%- for event in events %}
+gtag('event', '{{ event.type }}', {{ event.data|json_encode|raw }});
+{%- endfor -%}
+{%- endblock -%}
