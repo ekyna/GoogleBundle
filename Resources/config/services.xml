@@ -44,6 +44,13 @@
             <argument type="collection"/><!-- Replace d by DI extension -->
         </service>
 
+        <!-- Modal event listener -->
+        <service id="ekyna_google.event_listener.modal"
+                 class="Ekyna\Bundle\GoogleBundle\EventListener\ModalEventSubscriber">
+            <argument type="service" id="ekyna_google.tracking.renderer"/>
+            <tag name="kernel.event_subscriber"/>
+        </service>
+
         <!-- Twig Extensions -->
         <service id="ekyna_google.twig.tracking_extension" class="Ekyna\Bundle\GoogleBundle\Twig\TrackingExtension">
             <argument type="service" id="ekyna_google.tracking.renderer" />
