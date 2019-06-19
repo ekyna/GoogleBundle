@@ -19,7 +19,9 @@
 
 
 {%- block event_lines -%}
-{%- for event in events %}
+try {
+{%- for event in events -%}
 gtag('event', '{{ event.type }}', {{ event.data|json_encode|raw }});
 {%- endfor -%}
+} catch(e) {}
 {%- endblock -%}

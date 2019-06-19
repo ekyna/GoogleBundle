@@ -18,6 +18,7 @@
     "require": {
         "php": ">=7.1",
         "ekyna/admin-bundle": "0.7.x-dev",
+        "ekyna/cookie-consent-bundle": "0.7.x-dev",
         "google/apiclient": "^2.0",
         "egeloen/google-map-bundle": "^3.0",
         "egeloen/serializer-bundle": "^1.0"

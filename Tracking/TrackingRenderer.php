@@ -2,6 +2,8 @@
 
 namespace Ekyna\Bundle\GoogleBundle\Tracking;
 
+use Ekyna\Bundle\CookieConsentBundle\Model\Category;
+use Ekyna\Bundle\CookieConsentBundle\Service\Manager;
 use Ekyna\Bundle\SettingBundle\Manager\SettingsManagerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Environment;
@@ -30,6 +32,11 @@ class TrackingRenderer
     private $settings;
 
     /**
+     * @var Manager
+     */
+    private $consentManager;
+
+    /**
      * @var TrackingPool
      */
     private $pool;
@@ -56,6 +63,7 @@ class TrackingRenderer
      * @param Environment              $twig
      * @param RequestStack             $requestStack
      * @param SettingsManagerInterface $settings
+     * @param Manager $consentManager
      * @param TrackingPool             $pool
      * @param array                    $config
      */
@@ -63,12 +71,14 @@ class TrackingRenderer
         Environment $twig,
         RequestStack $requestStack,
         SettingsManagerInterface $settings,
+        Manager $consentManager,
         TrackingPool $pool,
         array $config = []
     ) {
         $this->twig = $twig;
         $this->requestStack = $requestStack;
         $this->settings = $settings;
+        $this->consentManager = $consentManager;
         $this->pool = $pool;
 
         $this->config = array_replace($config, [
@@ -90,6 +100,10 @@ class TrackingRenderer
         }
 
         if (!$id = $this->getGoogleTracking()) {
+            return '';
+        }
+
+        if (!$this->consentManager->isCategoryAllowed(Category::ANALYTIC)) {
             return '';
         }
 

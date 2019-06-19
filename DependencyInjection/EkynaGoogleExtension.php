@@ -30,6 +30,6 @@ class EkynaGoogleExtension extends Extension
 
         $container
             ->getDefinition('ekyna_google.tracking.renderer')
-            ->replaceArgument(4, $config['tracking']);
+            ->replaceArgument(5, $config['tracking']);
     }
 }
