@@ -103,9 +103,9 @@ class TrackingRenderer
             return '';
         }
 
-        if (!$this->consentManager->isCategoryAllowed(Category::ANALYTIC)) {
+        /*if (!$this->consentManager->isCategoryAllowed(Category::ANALYTIC)) {
             return '';
-        }
+        }*/
 
         $block = $this->requestStack->getCurrentRequest()->isXmlHttpRequest() ? 'events' : 'init';
 
