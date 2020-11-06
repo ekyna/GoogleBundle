@@ -1,7 +1,7 @@
 {% block widget_attributes -%}{% for key, value in attr %} {{ key }}="{{ value }}"{% endfor -%}{% endblock widget_attributes %}
 
 {% block google_map_widget %}
-{% spaceless %}
+{% apply spaceless %}
     {% set attr = attr|merge({'class': ('show-widget ' ~ attr.class|default(''))|trim }) %}
     <div{{ block('widget_attributes') }}>
         {% if value is not empty -%}
@@ -14,5 +14,39 @@
             <em>{{ 'ekyna_core.value.none'|trans }}</em>
         {%- endif %}
     </div>
-{% endspaceless %}
+{% endapply %}
 {% endblock google_map_widget %}
+
+
+
+{% block google_codes_widget %}
+{% apply spaceless %}
+    {% set attr = attr|merge({'class': ('show-widget ' ~ attr.class|default(''))|trim }) %}
+    <div{{ block('widget_attributes') }}>
+        <table class="table table-condensed">
+            <thead>
+            <tr>
+                <th>{{ 'ekyna_core.field.value'|trans }}</th>
+                <th>{{ 'ekyna_core.field.type'|trans }}</th>
+                <th>{{ 'ekyna_core.field.host'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for code in value %}
+            <tr>
+                <td>{{ code.value }}</td>
+                <td>{{ code.type }}</td>
+                <td>{{ code.host }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="3">
+                    <em>{{ 'ekyna_core.value.none'|trans }}</em>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endapply %}
+{% endblock google_codes_widget %}

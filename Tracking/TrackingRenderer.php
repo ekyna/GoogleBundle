@@ -2,8 +2,8 @@
 
 namespace Ekyna\Bundle\GoogleBundle\Tracking;
 
-use Ekyna\Bundle\CookieConsentBundle\Model\Category;
 use Ekyna\Bundle\CookieConsentBundle\Service\Manager;
+use Ekyna\Bundle\GoogleBundle\Model\Code;
 use Ekyna\Bundle\SettingBundle\Manager\SettingsManagerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Environment;
@@ -47,14 +47,19 @@ class TrackingRenderer
     private $config;
 
     /**
+     * @var bool
+     */
+    private $debug;
+
+    /**
      * @var TemplateWrapper
      */
     private $template;
 
     /**
-     * @var string
+     * @var Code[]
      */
-    private $propertyId;
+    private $codes;
 
 
     /**
@@ -63,9 +68,10 @@ class TrackingRenderer
      * @param Environment              $twig
      * @param RequestStack             $requestStack
      * @param SettingsManagerInterface $settings
-     * @param Manager $consentManager
+     * @param Manager                  $consentManager
      * @param TrackingPool             $pool
      * @param array                    $config
+     * @param bool                     $debug
      */
     public function __construct(
         Environment $twig,
@@ -73,19 +79,20 @@ class TrackingRenderer
         SettingsManagerInterface $settings,
         Manager $consentManager,
         TrackingPool $pool,
-        array $config = []
+        array $config = [],
+        bool $debug = false
     ) {
-        $this->twig = $twig;
-        $this->requestStack = $requestStack;
-        $this->settings = $settings;
+        $this->twig           = $twig;
+        $this->requestStack   = $requestStack;
+        $this->settings       = $settings;
         $this->consentManager = $consentManager;
-        $this->pool = $pool;
+        $this->pool           = $pool;
 
         $this->config = array_replace($config, [
             'template' => '@EkynaGoogle/tracking.html.twig',
             'enabled'  => true,
-            'debug'    => false,
         ]);
+        $this->debug  = $debug;
     }
 
     /**
@@ -99,7 +106,7 @@ class TrackingRenderer
             return '';
         }
 
-        if (!$id = $this->getGoogleTracking()) {
+        if (empty($config = $this->getCodes(Code::TYPE_CONFIG))) {
             return '';
         }
 
@@ -107,33 +114,66 @@ class TrackingRenderer
             return '';
         }*/
 
+        $events = $this->pool->getEvents();
+
+        foreach ($events as $event) {
+            if ($event->getType() !== Event::PURCHASE) {
+                continue;
+            }
+
+            if (empty($codes = $this->getCodes(Code::TYPE_CONVERSION))) {
+                break;
+            }
+
+            foreach ($codes as $code) {
+                $event = new Event(Event::CONVERSION);
+                $event->setExtra([
+                    'send_to' => $code->getValue(),
+                ]);
+
+                $events[] = $event;
+            }
+
+            break;
+        }
+
         $block = $this->requestStack->getCurrentRequest()->isXmlHttpRequest() ? 'events' : 'init';
 
         return $this->getTemplate()->renderBlock($block, [
-            'code'   => $id,
-            'debug'  => $this->config['debug'],
-            'events' => $this->pool->getEvents(),
+            'debug'  => $this->debug,
+            'config' => $config,
+            'events' => $events,
         ]);
     }
 
     /**
-     * Returns the configured google property id.
+     * Returns the configured google tracking codes.
      *
-     * @return string
+     * @param string $type
+     *
+     * @return Code[]
      */
-    private function getGoogleTracking()
+    private function getCodes(string $type): array
     {
-        if (null !== $this->propertyId) {
-            return $this->propertyId;
+        if (null === $this->codes) {
+            $this->codes = $this->settings->getParameter('google.codes');
         }
 
-        $this->propertyId = $this->settings->getParameter('google.property_id');
+        // TODO Warning: Will fetch the wrong code on cross domain XHR
+        $request = $this->requestStack->getMasterRequest();
+        $host    = $request->getHost();
 
-        if (empty($this->propertyId)) {
-            $this->propertyId = false;
-        }
+        return array_filter($this->codes, function (Code $code) use ($type, $host) {
+            if ($type !== $code->getType()) {
+                return false;
+            }
 
-        return $this->propertyId;
+            if (!empty($code->getHost()) && $host !== $code->getHost()) {
+                return false;
+            }
+
+            return true;
+        });
     }
 
     /**
@@ -147,7 +187,6 @@ class TrackingRenderer
             return $this->template;
         }
 
-        /** @noinspection PhpIncompatibleReturnTypeInspection */
         return $this->template = $this->twig->load($this->config['template']);
     }
 }

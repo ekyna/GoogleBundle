@@ -5,3 +5,22 @@
         {{ form_widget(form.longitude) }}
     </div>
 {% endblock ekyna_google_coordinate_widget %}
+
+
+{% block ekyna_google_code_widget %}
+    {%- set class = attr.class|default('') -%}
+    {%- set attr = attr|merge({'class': ('ekyna-collection-child ' ~ class)|trim }) -%}
+    <div {{ block('widget_container_attributes') }}>
+        <div class="row">
+            <div class="col-md-4">
+                {{ form_widget(form.value) }}
+            </div>
+            <div class="col-md-4">
+                {{ form_widget(form.type) }}
+            </div>
+            <div class="col-md-4">
+                {{ form_widget(form.host) }}
+            </div>
+        </div>
+    </div>
+{% endblock ekyna_google_code_widget %}

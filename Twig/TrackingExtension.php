@@ -3,13 +3,15 @@
 namespace Ekyna\Bundle\GoogleBundle\Twig;
 
 use Ekyna\Bundle\GoogleBundle\Tracking\TrackingRenderer;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
 /**
  * Class TrackingExtension
  * @package Ekyna\Bundle\GoogleBundle\Twig
  * @author Étienne Dauvergne <contact@ekyna.com>
  */
-class TrackingExtension extends \Twig_Extension
+class TrackingExtension extends AbstractExtension
 {
     /**
      * @var TrackingRenderer
@@ -33,7 +35,7 @@ class TrackingExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'google_tracking',
                 [$this->renderer, 'render'],
                 ['is_safe' => ['html']]

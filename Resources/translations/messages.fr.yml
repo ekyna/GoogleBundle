@@ -4,3 +4,4 @@ ekyna_google:
     field:
         coordinate: Géolocalisation
         property_id: Property ID
+        tracking: Tracking

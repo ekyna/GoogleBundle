@@ -21,6 +21,7 @@ class Event
     const LOGIN               = 'login';
     const PAGE_VIEW           = 'page_view';
     const PURCHASE            = 'purchase';
+    const CONVERSION          = 'conversion';
     const REFUND              = 'refund';
     const REMOVE_FROM_CART    = 'remove_from_cart';
     const SCREEN_VIEW         = 'screen_view';
@@ -36,6 +37,7 @@ class Event
 
     const CONTENT_PRODUCT     = 'product';
     const CONTENT_PROMOTION   = 'promotion';
+
 
     /**
      * Returns the event types.
@@ -54,6 +56,7 @@ class Event
             self::LOGIN,
             self::PAGE_VIEW,
             self::PURCHASE,
+            self::CONVERSION,
             self::REFUND,
             self::REMOVE_FROM_CART,
             self::SCREEN_VIEW,
@@ -161,6 +164,11 @@ class Event
      * @var string
      */
     private $coupon;
+
+    /**
+     * @var array
+     */
+    private $extra = [];
 
 
     /**
@@ -342,6 +350,20 @@ class Event
     }
 
     /**
+     * Sets the extra.
+     *
+     * @param array $extra
+     *
+     * @return Event
+     */
+    public function setExtra(array $extra): Event
+    {
+        $this->extra = $extra;
+
+        return $this;
+    }
+
+    /**
      * Returns the event data.
      *
      * @return array
@@ -350,7 +372,7 @@ class Event
     {
         // TODO Validation regarding to type
 
-        $data = array_filter([
+        $data = array_filter(array_replace([
             'transaction_id'  => $this->transactionId,
             'affiliation'     => $this->affiliation,
             'value'           => $this->value,
@@ -358,7 +380,7 @@ class Event
             'shipping'        => $this->shipping,
             'checkout_step'   => $this->checkoutStep,
             'checkout_option' => $this->checkoutOption,
-        ]);
+        ], $this->extra));
 
         if (!empty($this->items)) {
             $key = $this->getItemsKey();

@@ -1,27 +1,39 @@
 {%- block init -%}
-<script async src="https://www.googletagmanager.com/gtag/js?id={{ code }}"></script>
+{%- apply spaceless -%}
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ config|first.value }}"></script>
 <script>
     {% if debug -%}
-    window['ga-disable-{{ code }}'] = true;
+    {% for code in config %}
+    window['ga-disable-{{ code.value }}'] = true;
+    {%- endfor %}
     {%- endif %}
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', '{{ code }}');
+    {% for code in config %}
+    gtag('config', '{{ code.value }}');
+    {%- endfor %}
     {{ block('event_lines') }}
 </script>
+{%- endapply -%}
 {%- endblock -%}
 
 
 {%- block events -%}
+{%- if events is not empty -%}
 <script>{{ block('event_lines') }}</script>
+{%- endif -%}
 {%- endblock -%}
 
 
 {%- block event_lines -%}
+{%- apply spaceless -%}
+{% if events is not empty -%}
 try {
-{%- for event in events -%}
+{% for event in events %}
 gtag('event', '{{ event.type }}', {{ event.data|json_encode|raw }});
-{%- endfor -%}
+{%- endfor %}
 } catch(e) {}
+{%- endif -%}
+{%- endapply -%}
 {%- endblock -%}

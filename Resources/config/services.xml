@@ -19,6 +19,10 @@
         </service>
 
         <!-- Show types -->
+        <service id="ekyna_google.show.google_codes"
+                 class="Ekyna\Bundle\GoogleBundle\Show\Type\GoogleCodesType">
+            <tag name="ekyna_admin.show.type" alias="google_codes"/>
+        </service>
         <service id="ekyna_google.show.google_map_type"
                  class="Ekyna\Bundle\GoogleBundle\Show\Type\GoogleMapType">
             <tag name="ekyna_admin.show.type" alias="google_map"/>
@@ -43,6 +47,7 @@
             <argument type="service" id="Ekyna\Bundle\CookieConsentBundle\Service\Manager"/>
             <argument type="service" id="ekyna_google.tracking.pool"/>
             <argument type="collection"/><!-- Replace d by DI extension -->
+            <argument>%kernel.debug%</argument>
         </service>
 
         <!-- Modal event listener -->

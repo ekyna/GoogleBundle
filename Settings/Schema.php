@@ -2,9 +2,10 @@
 
 namespace Ekyna\Bundle\GoogleBundle\Settings;
 
+use Ekyna\Bundle\CoreBundle\Form\Type\CollectionType;
+use Ekyna\Bundle\GoogleBundle\Form\Type\CodeType;
 use Ekyna\Bundle\SettingBundle\Schema\AbstractSchema;
 use Ekyna\Bundle\SettingBundle\Schema\SettingsBuilder;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
@@ -15,33 +16,37 @@ use Symfony\Component\Form\FormBuilderInterface;
 class Schema extends AbstractSchema
 {
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function buildSettings(SettingsBuilder $builder)
     {
         $builder
             // TODO api credentials
             ->setDefaults(array_merge([
+                'codes'         => [],
+                // TODO Remove both
                 'tracking_code' => null,
-                'property_id' => null,
+                'property_id'   => null,
             ], $this->defaults))
-            ->setAllowedTypes('property_id', ['null', 'string']);
+            ->setAllowedTypes('codes', ['array']);
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('property_id', TextType::class, [
-                'label'    => 'ekyna_google.field.property_id',
-                'required' => false,
+            ->add('codes', CollectionType::class, [
+                'label'        => 'ekyna_google.field.tracking',
+                'entry_type'   => CodeType::class,
+                'allow_add'    => true,
+                'allow_delete' => true,
             ]);
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getLabel()
     {
@@ -49,7 +54,7 @@ class Schema extends AbstractSchema
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getShowTemplate()
     {
@@ -57,7 +62,7 @@ class Schema extends AbstractSchema
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getFormTemplate()
     {
