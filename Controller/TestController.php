@@ -16,32 +16,6 @@ class TestController extends AbstractController
     public function testAction()
     {
         $client = $this->get('ekyna_google.client');
-        $client->setUseObjects(true);
-
-        //$client->setAuthConfig('{"web":{"auth_uri":"https://accounts.google.com/o/oauth2/auth","client_secret":"F6P1m7Hj4q821Gu_hfQzjV-n","token_uri":"https://accounts.google.com/o/oauth2/token","client_email":"325619265545-s52p0vqjttcmcbp4p5s70q2mbi2si9dt@developer.gserviceaccount.com","client_x509_cert_url":"https://www.googleapis.com/robot/v1/metadata/x509/325619265545-s52p0vqjttcmcbp4p5s70q2mbi2si9dt@developer.gserviceaccount.com","client_id":"325619265545-s52p0vqjttcmcbp4p5s70q2mbi2si9dt.apps.googleusercontent.com","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs"}}');
-
-//        $token = $client->getAccessToken();
-//        var_dump($token);
-//        exit();
-
-        $client->setApplicationName("Test project");
-        //$client->setDeveloperKey("AIzaSyBQXhYai0pkg-ZhaBmP36372n1GZSw4qfo");
-//        $client->setClientId('325619265545-s52p0vqjttcmcbp4p5s70q2mbi2si9dt.apps.googleusercontent.com');
-//        $client->setClientSecret('F6P1m7Hj4q821Gu_hfQzjV-n');
-
-        $client->setAuthConfig('{"web":{"auth_uri":"https://accounts.google.com/o/oauth2/auth","client_secret":"F6P1m7Hj4q821Gu_hfQzjV-n","token_uri":"https://accounts.google.com/o/oauth2/token","client_email":"325619265545-s52p0vqjttcmcbp4p5s70q2mbi2si9dt@developer.gserviceaccount.com","client_x509_cert_url":"https://www.googleapis.com/robot/v1/metadata/x509/325619265545-s52p0vqjttcmcbp4p5s70q2mbi2si9dt@developer.gserviceaccount.com","client_id":"325619265545-s52p0vqjttcmcbp4p5s70q2mbi2si9dt.apps.googleusercontent.com","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs"}}');
-
-
-        $analytics = new \Google_Service_Analytics($client);
-        $ret = $analytics->data_ga->get('UA-10227193-10', '2015-03-01', '2015-03-14', 'ga:pageviews');
-        var_dump($ret->count());
-
-
-
-
-        exit();
-
-
 
         $service = new \Google_Service_Books($client);
 
