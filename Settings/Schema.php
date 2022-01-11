@@ -27,9 +27,6 @@ class Schema extends AbstractSchema
             // TODO api credentials
             ->setDefaults(array_merge([
                 'codes'         => [],
-                // TODO Remove both
-                'tracking_code' => null,
-                'property_id'   => null,
             ], $this->defaults))
             ->setAllowedTypes('codes', ['array']);
     }
