@@ -27,5 +27,13 @@ class ExtendIvoryMapBundle implements CompilerPassInterface
             ->getDefinition('ivory.google_map.twig.extension.api')
             ->setClass(Twig\ApiExtension::class)
             ->addMethodCall('setMapPool', [new Reference('ekyna_google.map.pool')]);
+
+        if (!$container->has('ivory.google_map.serializer.loader')) {
+            return;
+        }
+
+        $container
+            ->getDefinition('ivory.google_map.serializer.loader')
+            ->replaceArgument(0, '%kernel.project_dir%/vendor/ivory/google-map/src/Service/Serializer');
     }
 }

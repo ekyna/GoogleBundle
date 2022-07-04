@@ -59,7 +59,7 @@ class MapPool
      *
      * @return false|int
      */
-    private function index(Map $map)
+    private function index(Map $map): bool|int
     {
         return array_search($map, $this->maps, true);
     }

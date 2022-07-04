@@ -16,27 +16,15 @@
     "homepage": "https://github.com/ekyna/GoogleBundle",
     "license": "MIT",
     "require": {
-        "php": ">=7.4",
-        "ekyna/admin-bundle": "0.8.x-dev",
-        "ekyna/cookie-consent-bundle": "0.8.x-dev",
+        "php": ">=8.1",
+        "ekyna/admin-bundle": "0.9.x-dev",
+        "ekyna/cookie-consent-bundle": "0.9.x-dev",
         "google/apiclient": "^2.9",
-        "ivory/google-map": "dev-sf5",
-        "ivory/google-map-bundle": "dev-sf5",
         "ivory/serializer-bundle": "^1.0"
     },
     "autoload": {
         "psr-4": {
             "Ekyna\\Bundle\\GoogleBundle\\": ""
         }
-    },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/ekyna/ivory-google-map"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/ekyna/ivory-google-map-bundle"
-        }
-    ]
+    }
 }

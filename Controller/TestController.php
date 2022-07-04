@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Ekyna\Bundle\GoogleBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class TestController
@@ -13,7 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  */
 class TestController extends AbstractController
 {
-    public function testAction()
+    public function testAction(): Response
     {
         $client = $this->get('ekyna_google.client');
 

@@ -6,7 +6,7 @@ namespace Ekyna\Bundle\GoogleBundle\Settings;
 
 use Ekyna\Bundle\GoogleBundle\Form\Type\CodeType;
 use Ekyna\Bundle\SettingBundle\Schema\AbstractSchema;
-use Ekyna\Bundle\SettingBundle\Schema\SettingsBuilder;
+use Ekyna\Bundle\SettingBundle\Schema\SettingBuilder;
 use Ekyna\Bundle\UiBundle\Form\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -21,7 +21,7 @@ use function Symfony\Component\Translation\t;
  */
 class Schema extends AbstractSchema
 {
-    public function buildSettings(SettingsBuilder $builder): void
+    public function buildSettings(SettingBuilder $builder): void
     {
         $builder
             // TODO api credentials
