@@ -20,6 +20,7 @@
         "ekyna/admin-bundle": "0.9.x-dev",
         "ekyna/cookie-consent-bundle": "0.9.x-dev",
         "google/apiclient": "^2.9",
+        "ivory/google-map-bundle": "^3.0",
         "ivory/serializer-bundle": "^1.0"
     },
     "autoload": {
